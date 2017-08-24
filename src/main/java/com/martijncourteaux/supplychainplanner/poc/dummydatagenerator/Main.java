@@ -98,7 +98,7 @@ public class Main {
 
     private static void generate_dummies(Connection conn) throws SQLException {
 
-        int locations = 1000;
+        int locations = 400;
         int lines = 50 * locations;
         int offers = 4 * lines;
         int agents = 30;
@@ -111,7 +111,7 @@ public class Main {
         loc_gen.generate(conn, locations);
 
         LineGenerator lg = new LineGenerator();
-        lg.generate(conn, lines, locations);
+        lg.generate(conn, lines);
 
         OffersGenerator og = new OffersGenerator();
         og.generate(conn, offers, agents, lines);

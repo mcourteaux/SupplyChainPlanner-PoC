@@ -59,7 +59,7 @@ public class PoCTransportFilterTest extends TestCase {
         cm.cost_per_kg_weight = 1.0;
         cm.cost_per_m3_weight = 1.0;
         cm.cost_per_pallet_weight = 1.0;
-        cm.duration_hours_weight = 300.0;
+        cm.duration_hours_weight = 30.0;
 
         /* Some parameters for extra filtering. */
         cm.allow_ferry = true;

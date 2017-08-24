@@ -68,8 +68,8 @@ public class PoCTransportFilter extends TransportFilter<PoCContext, PoCShipment,
         }
 
         /* Heuristic filter to avoid selecting too many options. */
-        double lon_margin = 1.0;
-        double lat_margin = 2.0;
+        double lon_margin = 4.0;
+        double lat_margin = 4.0;
         double min_lon = Math.min(cm.source.lon, cm.destination.lon) - lon_margin;
         double min_lat = Math.min(cm.source.lat, cm.destination.lat) - lat_margin;
         double max_lon = Math.max(cm.source.lon, cm.destination.lon) + lon_margin;

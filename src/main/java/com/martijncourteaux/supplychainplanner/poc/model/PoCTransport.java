@@ -72,7 +72,7 @@ public class PoCTransport extends AbstractTransport<PoCLocation> {
         sb.append(line_modality);
         sb.append("   ", 0, 6 - line_modality.length());
         sb.append("]-{ ");
-        sb.append(String.format("%8s: "
+        sb.append(String.format("%12s: "
                 + "agent=%2d, "
                 + "cost=%7.2f EUR, "
                 + "weight=%7.3f, "
