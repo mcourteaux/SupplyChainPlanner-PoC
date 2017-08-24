@@ -56,6 +56,9 @@ public class LineGenerator {
         }
         System.out.println("Done");
 
+        /*
+         * We will calculate approximate distances for all inserted lines.
+         */
         query = "UPDATE transport_lines "
                 + "SET line_distance=subquery.calced_dist "
                 + "FROM ("

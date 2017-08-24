@@ -88,9 +88,11 @@ public class Main {
             stat.executeUpdate("DELETE FROM transport_lines");
             stat.executeUpdate("DELETE FROM transport_offers");
             stat.executeUpdate("DELETE FROM locations");
+            stat.executeUpdate("DELETE FROM agents");
             stat.execute("ALTER SEQUENCE locations_location_id_seq RESTART");
             stat.execute("ALTER SEQUENCE transport_lines_line_id_seq RESTART");
             stat.execute("ALTER SEQUENCE transport_offers_offer_id_seq RESTART");
+            stat.execute("ALTER SEQUENCE agents_agent_id_seq RESTART");
         }
     }
 
@@ -99,6 +101,12 @@ public class Main {
         int locations = 100;
         int lines = 50 * locations;
         int offers = 4 * lines;
+        int agents = 30;
+
+
+        AgentGenerator ag = new AgentGenerator();
+        ag.generate(conn, agents);
+        
         LocationGenerator loc_gen = new LocationGenerator();
         loc_gen.generate(conn, locations);
 
@@ -106,6 +114,6 @@ public class Main {
         lg.generate(conn, lines, locations);
 
         OffersGenerator og = new OffersGenerator();
-        og.generate(conn, offers, 30, lines);
+        og.generate(conn, offers, agents, lines);
     }
 }
