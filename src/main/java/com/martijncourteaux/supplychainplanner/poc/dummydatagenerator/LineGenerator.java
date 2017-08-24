@@ -61,7 +61,7 @@ public class LineGenerator {
                 + "FROM ("
                 + "   SELECT "
                 + "     0.01745329252 * SQRT("
-                + "        POW(lfrom.location_lon - lto.location_lon, 2) + "
+                + "        POW((lfrom.location_lon - lto.location_lon) * COS((lfrom.location_lat + lto.location_lat) / 2), 2) + "
                 + "        POW(lfrom.location_lat - lto.location_lat, 2)"
                 + "     ) * 6371          AS calced_dist, "
                 + "     lfrom.location_id AS from_id, "

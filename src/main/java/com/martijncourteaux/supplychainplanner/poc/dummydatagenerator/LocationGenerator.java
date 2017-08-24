@@ -21,8 +21,8 @@ public class LocationGenerator {
 
         for (int i = 0; i < numLocations; ++i) {
             // Some random coordinates region Europe:
-            stat.setDouble(1, random.nextDouble() * 30);
-            stat.setDouble(2, random.nextDouble() * 6);
+            stat.setDouble(1, random.nextDouble() * 8);
+            stat.setDouble(2, random.nextDouble() * 5);
 
             stat.setString(3, String.format("LOCATION_%04d", i + 1));
 
