@@ -2,6 +2,7 @@
 import com.martijncourteaux.supplychainplanner.generic.shortestpaths.GraphBuilder;
 import com.martijncourteaux.supplychainplanner.generic.shortestpaths.ShortestPathsSolver;
 import com.martijncourteaux.supplychainplanner.generic.shortestpaths.TransportGraph;
+import com.martijncourteaux.supplychainplanner.generic.shortestpaths.TransportPath;
 import com.martijncourteaux.supplychainplanner.poc.PoCContext;
 import com.martijncourteaux.supplychainplanner.poc.logic.PoCTransportFilter;
 import com.martijncourteaux.supplychainplanner.poc.model.PoCLocation;
@@ -46,7 +47,7 @@ public class PoCTransportFilterTest extends TestCase {
 
         PoCShipment cm = new PoCShipment();
         cm.source = context.getLocation(3);
-        cm.destination = context.getLocation(51);
+        cm.destination = context.getLocation(59);
 
         /* Specify the size of the consignment, such that the offers can be
              * filtered. */
@@ -99,6 +100,8 @@ public class PoCTransportFilterTest extends TestCase {
 
             System.out.println(sps.getTopKShortestPaths().get(i));
             System.out.println();
+            System.out.println(googleVisualizePath(graph, sps.getTopKShortestPaths().get(i)));
+            System.out.println();
 
             total_found++;
         }
@@ -106,4 +109,28 @@ public class PoCTransportFilterTest extends TestCase {
         System.out.println("Found " + total_found + "/" + count + " paths.");
     }
 
+    public static String googleVisualizePath(TransportGraph<PoCLocation, PoCTransport> graph, TransportPath<PoCLocation, PoCTransport> path) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("https://www.google.com/maps/embed/v1/directions");
+        sb.append("?key=AIzaSyD4iE2xVSpkLLOXoyqT-RuPwURN3ddScAI");
+        sb.append("&origin=");
+        sb.append(googleCoords(graph.getSourceLocation()));
+        sb.append("&destination=");
+        sb.append(googleCoords(graph.getSinkLocation()));
+        if (path.numberOfTransports() > 1) {
+            sb.append("&waypoints=");
+            for (int i = 1; i < path.numberOfTransports(); ++i) {
+                if (i > 1) {
+                    sb.append("|");
+                }
+                PoCTransport t = path.getTransportLeg(i);
+                sb.append(googleCoords(t.source));
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String googleCoords(PoCLocation l) {
+        return String.format("%.4f,%.4f", l.lat, l.lon);
+    }
 }
