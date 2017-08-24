@@ -68,12 +68,26 @@ public class PoCTransportFilter extends TransportFilter<PoCContext, PoCShipment,
         }
 
         /* Heuristic filter to avoid selecting too many options. */
-        double lon_margin = 4.0;
-        double lat_margin = 4.0;
+        double lon_margin = 1.0;
+        double lat_margin = 2.0;
+        double lon_min_margin = 5.0;
+        double lat_min_margin = 5.0;
         double min_lon = Math.min(cm.source.lon, cm.destination.lon) - lon_margin;
         double min_lat = Math.min(cm.source.lat, cm.destination.lat) - lat_margin;
         double max_lon = Math.max(cm.source.lon, cm.destination.lon) + lon_margin;
         double max_lat = Math.max(cm.source.lat, cm.destination.lat) + lat_margin;
+        if (max_lon - min_lon < lon_min_margin) {
+            double center = (min_lon + max_lon) * 0.5;
+            double extend = lon_min_margin * 0.5;
+            min_lon = center - extend;
+            max_lon = center + extend;
+        }
+        if (max_lat - min_lat < lat_min_margin) {
+            double center = (min_lat + max_lat) * 0.5;
+            double extend = lat_min_margin * 0.5;
+            min_lat = center - extend;
+            max_lat = center + extend;
+        }
         conditions += " AND loc_from.location_lon > " + min_lon;
         conditions += " AND loc_from.location_lat > " + min_lat;
         conditions += " AND loc_from.location_lon < " + max_lon;

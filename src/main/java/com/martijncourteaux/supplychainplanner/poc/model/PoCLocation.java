@@ -30,6 +30,6 @@ public class PoCLocation extends AbstractLocation {
 
     @Override
     public String toString() {
-        return String.format("LOC_%03d", id);
+        return String.format("LOC_%03d (%6.3f; %6.3f)", id, lat, lon);
     }
 }
