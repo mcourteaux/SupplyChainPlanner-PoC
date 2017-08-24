@@ -98,7 +98,7 @@ public class Main {
 
     private static void generate_dummies(Connection conn) throws SQLException {
 
-        int locations = 100;
+        int locations = 1000;
         int lines = 50 * locations;
         int offers = 4 * lines;
         int agents = 30;

@@ -45,8 +45,8 @@ public class PoCTransportFilterTest extends TestCase {
         PoCTransportFilter htft = new PoCTransportFilter();
 
         PoCShipment cm = new PoCShipment();
-        cm.location_from = 1;
-        cm.location_to = 55;
+        cm.source = context.getLocation(3);
+        cm.destination = context.getLocation(51);
 
         /* Specify the size of the consignment, such that the offers can be
              * filtered. */
@@ -80,10 +80,8 @@ public class PoCTransportFilterTest extends TestCase {
         System.out.printf("Locations from: %d%nLocations till: %d%n", countFrom, countTill);
 
         GraphBuilder<PoCContext, PoCLocation, PoCTransport> gb = new GraphBuilder<>();
-        PoCLocation from = new PoCLocation();
-        from.id = cm.location_from;
-        PoCLocation to = new PoCLocation();
-        to.id = cm.location_to;
+        PoCLocation from = cm.source;
+        PoCLocation to = cm.destination;
         TransportGraph graph = gb.buildGraph(context, result, from, to);
 
         System.out.println("Searching in graph for shortest paths...");

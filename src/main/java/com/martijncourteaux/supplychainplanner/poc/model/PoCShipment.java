@@ -14,10 +14,6 @@ import java.util.List;
  * @author martijn
  */
 public class PoCShipment extends  AbstractShipment<PoCLocation, PoCGoods> {
-    
-    /* Traval information */
-    public int location_from;
-    public int location_to;
 
     /* Weights to determine cost. */
     public double basic_cost_weight = 1.0;
@@ -41,8 +37,8 @@ public class PoCShipment extends  AbstractShipment<PoCLocation, PoCGoods> {
     @Override
     public String toString() {
         return "ConsignmentDetails{\n"
-                + " location_from=" + location_from + ",\n"
-                + " location_to=" + location_to + ",\n"
+                + " location_from=" + source + ",\n"
+                + " location_to=" + destination + ",\n"
                 + " basic_cost_weight=" + basic_cost_weight + ",\n"
                 + " cost_per_kg_weight=" + cost_per_kg_weight + ",\n"
                 + " cost_per_m3_weight=" + cost_per_m3_weight + ",\n"
