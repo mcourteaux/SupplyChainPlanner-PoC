@@ -90,7 +90,7 @@ public class PoCTransportFilterTest extends TestCase {
         ShortestPathsSolver sps = new ShortestPathsSolver(graph);
 
         int total_found = 0;
-        int count = 100;
+        int count = 10;
         for (int i = 0; i < count; ++i) {
             int found = sps.searchPaths(1);
             if (found == 0) {

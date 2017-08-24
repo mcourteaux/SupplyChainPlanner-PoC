@@ -8,6 +8,7 @@ package com.martijncourteaux.supplychainplanner.poc.model;
 import com.martijncourteaux.supplychainplanner.generic.model.AbstractTransport;
 import com.martijncourteaux.supplychainplanner.persistence.Column;
 import com.martijncourteaux.supplychainplanner.persistence.Entity;
+import com.martijncourteaux.supplychainplanner.persistence.EntityStringifier;
 
 /**
  *
@@ -43,6 +44,7 @@ public class PoCTransport extends AbstractTransport<PoCLocation> {
     @Column(exact_column = "line_from") public int line_from;
     @Column(exact_column = "line_to") public int line_to;
     @Column(exact_column = "line_modality") public String line_modality;
+    @Column(exact_column = "line_distance") public double line_distance;
 
     /* From table agents */
     @Column(exact_column = "agent_name") public String agent_name;
@@ -74,11 +76,17 @@ public class PoCTransport extends AbstractTransport<PoCLocation> {
                 + "agent=%2d, "
                 + "cost=%7.2f EUR, "
                 + "weight=%7.3f, "
-                + "duration=%2dh",
+                + "duration=%2dh, "
+                + "distance=%6.1f km",
                 line_code, agent, cost_total,
-                weight_function, duration_hours));
+                weight_function, duration_hours, line_distance));
         sb.append("  }---> ");
         sb.append(String.format("%3d", line_to));
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return EntityStringifier.entityToString(this);
     }
 }

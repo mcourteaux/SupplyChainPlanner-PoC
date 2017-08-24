@@ -72,7 +72,7 @@ public class PoCTransportFilter extends TransportFilter<PoCContext, PoCShipment,
                 + "(" + cost_formula + ") AS cost_total, "
                 + "(" + weight_formula + ") AS weight_function, "
                 + "offer_duration_hours, offer_agent, "
-                + "line_from, line_to, line_code, line_modality "
+                + "line_from, line_to, line_code, line_modality, line_distance "
                 + "FROM transport_offers "
                 + "INNER JOIN transport_lines ON (line_id = offer_line) "
                 + "WHERE " + conditions;
