@@ -45,46 +45,52 @@ public class PoCTransportFilterTest extends TestCase {
     public void testFilterQuery() throws SQLException {
         PoCTransportFilter htft = new PoCTransportFilter();
 
+        /* Source and destination of the shipment:
+         * works by selecting a warehouse for source and destination, by id. */
         PoCShipment cm = new PoCShipment();
         cm.source = context.getLocation(3);
         cm.destination = context.getLocation(59);
 
         /* Specify the size of the consignment, such that the offers can be
-             * filtered. */
+         * filtered. Eg: some offers are only valid up to a certain amount of
+         * weight. */
         cm.pallets = 5;
         cm.volume_m3 = 20;
         cm.weight_kg = 800;
 
         /* Cost weights */
-        cm.basic_cost_weight = 1.0;
-        cm.cost_per_kg_weight = 1.0;
-        cm.cost_per_m3_weight = 1.0;
-        cm.cost_per_pallet_weight = 1.0;
-        cm.duration_hours_weight = 30.0;
+        cm.basic_cost_weight = 1.0;      ///< \
+        cm.cost_per_kg_weight = 1.0;     ///< |
+        cm.cost_per_m3_weight = 1.0;     ///< | Actual costs in euros are weighted as is. 
+        cm.cost_per_pallet_weight = 1.0; ///< /
+        cm.duration_hours_weight = 30.0; ///< Cost function increases by 30 for every hour of transportation. (Ie: an hour "costs" 30 euros).
 
         /* Some parameters for extra filtering. */
         cm.allow_ferry = true;
 
         /* Some agents that the client had trouble with and doesn't want to
-             * work with again. */
+         * work with again. */
         cm.disallowed_agents.add(7);
 
+        /* Fetch the possible transport offers given these shipment details. */
         List<PoCTransport> result = htft.fetch(context, cm);
         System.out.printf("Showing the first 3 results of the %d%n", result.size());
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < Math.min(3, result.size()); ++i) {
             System.out.println(result.get(i));
         }
 
-        System.out.println("Counting distinct regions");
+        System.out.println("Counting distinct locations");
         long countFrom = result.stream().map(t -> t.line_from).distinct().count();
         long countTill = result.stream().map(t -> t.line_to).distinct().count();
         System.out.printf("Locations from: %d%nLocations till: %d%n", countFrom, countTill);
 
+        /* Now build a graph with the resulting options from the database. */
         GraphBuilder<PoCContext, PoCLocation, PoCTransport> gb = new GraphBuilder<>();
         PoCLocation from = cm.source;
         PoCLocation to = cm.destination;
         TransportGraph graph = gb.buildGraph(context, result, from, to);
 
+        /* And start searching for shortest paths in it. */
         System.out.println("Searching in graph for shortest paths...");
         ShortestPathsSolver sps = new ShortestPathsSolver(graph);
 
@@ -100,6 +106,8 @@ public class PoCTransportFilterTest extends TestCase {
 
             System.out.println(sps.getTopKShortestPaths().get(i));
             System.out.println();
+            /* Print out a google embed url to visualize using the
+             * ./visualize.html utility page. */
             System.out.println(googleVisualizePath(graph, sps.getTopKShortestPaths().get(i)));
             System.out.println();
 
